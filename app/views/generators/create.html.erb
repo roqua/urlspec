@@ -1,0 +1,57 @@
+<h1>Okay, here's what I've got</h1>
+
+<p>These are the values we used. This is from variable <code>@array_for_token</code></p>
+<%= debug @array_for_token %>
+
+<p>This is <code>@string_for_token</code>: <code><%= @string_for_token %></code></p>
+
+<p>This is the token: <code><%= @hashed_token %></code></p>
+
+<p>Then, this is a nice URL to use. We URL-escape each value, and keep in mind that the order of HTTP-parameters does not matter:</p>
+
+<pre>
+https://marten.rgoc.rug.nl/urlspec/validator/go
+  ?timestamp=<%= CGI.escape(@timestamp) %>
+  &amp;userid=<%= CGI.escape(@profess_id) %>
+  &amp;clientid=<%= CGI.escape(@patient_id) %>
+  &amp;version=<%= CGI.escape(@version) %>
+  &amp;token=<%= CGI.escape(@hashed_token) %>
+  &amp;ggzname=<%= CGI.escape(@ggz_name) %>
+</pre>
+
+<p>In fact, let me link that up for you: 
+<%= link_to "CLICK ME", validator_go_path(:timestamp => CGI.escape(@timestamp), 
+                                           :userid => CGI.escape(@profess_id), 
+                                           :clientid => CGI.escape(@patient_id), 
+                                           :version => CGI.escape(@version), 
+                                           :token => CGI.escape(@hashed_token),
+                                           :ggzname => CGI.escape(@ggz_name)
+                                          ) %></p>
+
+<h1>Reference code</h1>
+
+<pre>
+    # NOTE: Reference implementation, therefore we include comments which explain what some ruby
+    # commands do
+
+    @ggz_name   = (params["ggzname"]    || "").strip    # .strip gets rid of extra spaces at the start
+    @profess_id = (params['userid']     || "").strip    # or at the end
+    @patient_id = (params['clientid']   || "").strip
+    @secret     = SECRET
+    @version    = (params['version']    || "1").strip
+
+    # I hate timezones, this gives me a UTC-based time, so that we can hardcode +00:00 offset
+    @timestamp = Time.now.getgm.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+    @array_for_token = [
+      @ggz_name,
+      @secret,
+      @timestamp,
+      @profess_id,
+      @patient_id,
+      @version
+    ]
+
+    @string_for_token = @array_for_token.join("|").downcase
+    @hashed_token     = Digest::SHA1.hexdigest(@string_for_token)
+</pre>
