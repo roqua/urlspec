@@ -1,4 +1,5 @@
-# This file is used by Rack-based servers to start the application.
+authmac_path = $LOAD_PATH.find{|i| i =~ /authmac/ }
+$LOAD_PATH.unshift(File.expand_path(authmac_path + "/../example"))
 
-require ::File.expand_path('../config/environment',  __FILE__)
-run Urlspec::Application
+require 'app'
+run Sinatra::Application
