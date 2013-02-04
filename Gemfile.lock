@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/roqua/authmac.git
+  remote: git://github.com/roqua/authmac
   revision: a785fd8241d39fbccc8cb7729524c2f02bfefbc5
   specs:
     authmac (0.0.1)

@@ -1,4 +1,4 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
-gem 'authmac', :github => 'roqua/authmac'
+gem 'authmac', :git => 'git://github.com/roqua/authmac'
