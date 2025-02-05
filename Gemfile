@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
-ruby '2.2.4'
+ruby '3.3.7'
 
 gem 'thin'
 gem 'sinatra'
-gem 'authmac', git: 'git://github.com/roqua/authmac.git'
+gem 'authmac', git: 'https://github.com/roqua/authmac.git'
